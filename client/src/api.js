@@ -1,6 +1,6 @@
 const API_BASE =
   import.meta.env.VITE_API_BASE?.trim() ||
-  (typeof window !== "undefined" ? window.location.origin : "http://localhost:5000");
+  (typeof window !== "undefined" ? window.location.origin : "https://subscription-based-content-access-system.onrender.com");
 
 export function buildAssetUrl(path = "") {
   if (!path) return "";

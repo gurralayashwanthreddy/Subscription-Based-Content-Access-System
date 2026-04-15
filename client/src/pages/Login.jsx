@@ -34,8 +34,8 @@ const Login = ({ onLogin }) => {
     <div className="page shell">
       <div className="auth-card">
         <div className="auth-header">
-          <h1>Nerchukunodiki Nerchukunantha</h1>
-          <p>Sign in as admin or user to view your dashboard.</p>
+          <h1>Where Skills Become Power</h1>
+          <p>Sign in to access your personalized learning dashboard.</p>
         </div>
 
         <form onSubmit={handleSubmit} className="auth-form">

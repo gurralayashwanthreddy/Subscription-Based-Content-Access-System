@@ -1,0 +1,10 @@
+{
+  "name": "subscription-dashboard",
+  "private": true,
+  "scripts": {
+    "install:client": "npm install --prefix client",
+    "install:server": "npm install --prefix server",
+    "build": "npm install --prefix client && npm run build --prefix client",
+    "start": "npm start --prefix server"
+  }
+}

@@ -107,13 +107,12 @@ router.delete("/:courseId/video/:index", async (req, res) => {
     course.videos.splice(index, 1);
     await course.save();
 
-    // ✅ IMPORTANT: Always send JSON
     return res.status(200).json(course);
 
   } catch (err) {
     console.error(err);
 
-    // ✅ ALSO RETURN JSON HERE
+    
     return res.status(500).json({ message: "Delete failed" });
   }
 });

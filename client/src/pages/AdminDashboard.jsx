@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { fetchJson } from "../api";
+import API_BASE from "../api";
 
 function parsePrice(price = "") {
   const digits = String(price).replace(/[^\d.]/g, "");
@@ -88,7 +89,7 @@ const AdminDashboard = ({ user, onLogout }) => {
 
   const deleteVideo = async (courseId, index) => {
   try {
-    const res = await fetch(`/api/courses/${courseId}/video/${index}`, {
+    const res = await fetch(`${API_BASE}/api/courses/${courseId}/video/${index}`, {
       method: "DELETE"
     });
 
@@ -106,7 +107,7 @@ const AdminDashboard = ({ user, onLogout }) => {
 
 const deleteAssignment = async (courseId, index) => {
   try {
-    const res = await fetch(`/api/courses/${courseId}/assignment/${index}`, {
+    const res = await fetch(`${API_BASE}/api/courses/${courseId}/assignment/${index}`, {
       method: "DELETE"
     });
 

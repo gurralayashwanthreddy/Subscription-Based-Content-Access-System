@@ -100,15 +100,21 @@ router.delete("/:courseId/video/:index", async (req, res) => {
     const { courseId, index } = req.params;
 
     const course = await Course.findById(courseId);
-    if (!course) return res.status(404).json({ message: "Course not found" });
+    if (!course) {
+      return res.status(404).json({ message: "Course not found" });
+    }
 
-    course.videos.splice(index, 1); // remove video
+    course.videos.splice(index, 1);
     await course.save();
 
-    res.json(course);
+    // ✅ IMPORTANT: Always send JSON
+    return res.status(200).json(course);
+
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Failed to delete video" });
+
+    // ✅ ALSO RETURN JSON HERE
+    return res.status(500).json({ message: "Delete failed" });
   }
 });
 

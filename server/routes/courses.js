@@ -95,28 +95,37 @@ router.delete("/:id", async (req, res) => {
 });
 
 
-router.delete("/:courseId/content", async (req, res) => {
+router.delete("/:courseId/video/:index", async (req, res) => {
   try {
-    const { type, index } = req.body;
+    const { courseId, index } = req.params;
 
-    const course = await Course.findById(req.params.courseId);
+    const course = await Course.findById(courseId);
+    if (!course) return res.status(404).json({ message: "Course not found" });
 
-    if (!course) {
-      return res.status(404).json({ message: "Course not found" });
-    }
-
-    if (type === "videos") {
-      course.videos.splice(index, 1);
-    } else if (type === "assignments") {
-      course.assignments.splice(index, 1);
-    }
-
+    course.videos.splice(index, 1); // remove video
     await course.save();
 
     res.json(course);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Delete failed" });
+    res.status(500).json({ message: "Failed to delete video" });
+  }
+});
+
+router.delete("/:courseId/assignment/:index", async (req, res) => {
+  try {
+    const { courseId, index } = req.params;
+
+    const course = await Course.findById(courseId);
+    if (!course) return res.status(404).json({ message: "Course not found" });
+
+    course.assignments.splice(index, 1); // remove assignment
+    await course.save();
+
+    res.json(course);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to delete assignment" });
   }
 });
 

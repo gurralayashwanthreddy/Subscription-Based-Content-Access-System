@@ -86,21 +86,39 @@ const AdminDashboard = ({ user, onLogout }) => {
     }
   };
 
-  const deleteContent = async (courseId, type, index) => {
+  const deleteVideo = async (courseId, index) => {
   try {
-    const updated = await fetchJson(`/api/courses/${courseId}/content`, {
-      method: "DELETE",
-      body: JSON.stringify({ type, index })
+    const res = await fetch(`/api/courses/${courseId}/video/${index}`, {
+      method: "DELETE"
     });
 
-    setCourses((prev) =>
-      prev.map((c) => (c._id === updated._id ? updated : c))
-    );
+    const updatedCourse = await res.json();
 
-    alert("Content deleted successfully.");
+    setContentCourse(updatedCourse);
+
+    setCourses(prev =>
+      prev.map(c => (c._id === updatedCourse._id ? updatedCourse : c))
+    );
   } catch (err) {
     console.error(err);
-    alert("Delete failed");
+  }
+};
+
+const deleteAssignment = async (courseId, index) => {
+  try {
+    const res = await fetch(`/api/courses/${courseId}/assignment/${index}`, {
+      method: "DELETE"
+    });
+
+    const updatedCourse = await res.json();
+
+    setContentCourse(updatedCourse);
+
+    setCourses(prev =>
+      prev.map(c => (c._id === updatedCourse._id ? updatedCourse : c))
+    );
+  } catch (err) {
+    console.error(err);
   }
 };
 
@@ -524,34 +542,76 @@ const AdminDashboard = ({ user, onLogout }) => {
                       <div>
   <strong>Existing Videos</strong>
 
-  {contentCourse.videos?.map((video, i) => (
-    <div key={i} style={{ display: "flex", justifyContent: "space-between", marginBottom: "5px" }}>
-      <span>{video.title}</span>
-
-      <button
-        onClick={() => deleteContent(contentCourse._id, "videos", i)}
-        style={{ color: "red", border: "none", background: "none", cursor: "pointer" }}
+  {contentCourse.videos?.length === 0 ? (
+    <p>0 files</p>
+  ) : (
+    contentCourse.videos.map((video, index) => (
+      <div
+        key={index}
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          marginTop: "8px",
+          background: "#1e293b",
+          padding: "8px",
+          borderRadius: "6px"
+        }}
       >
-        Delete
-      </button>
-    </div>
-  ))}
+        <span>{video.title || `Video ${index + 1}`}</span>
+
+        <button
+          onClick={() => deleteVideo(contentCourse._id, index)}
+          style={{
+            color: "white",
+            background: "red",
+            border: "none",
+            padding: "5px 10px",
+            borderRadius: "5px",
+            cursor: "pointer"
+          }}
+        >
+          Delete
+        </button>
+      </div>
+    ))
+  )}
 </div>
                      <div>
   <strong>Existing Assignments</strong>
 
-  {contentCourse.assignments?.map((item, i) => (
-    <div key={i} style={{ display: "flex", justifyContent: "space-between", marginBottom: "5px" }}>
-      <span>{item.title}</span>
-
-      <button
-        onClick={() => deleteContent(contentCourse._id, "assignments", i)}
-        style={{ color: "red", border: "none", background: "none", cursor: "pointer" }}
+  {contentCourse.assignments?.length === 0 ? (
+    <p>0 files</p>
+  ) : (
+    contentCourse.assignments.map((assignment, index) => (
+      <div
+        key={index}
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          marginTop: "8px",
+          background: "#1e293b",
+          padding: "8px",
+          borderRadius: "6px"
+        }}
       >
-        Delete
-      </button>
-    </div>
-  ))}
+        <span>{assignment.title || `Assignment ${index + 1}`}</span>
+
+        <button
+          onClick={() => deleteAssignment(contentCourse._id, index)}
+          style={{
+            color: "white",
+            background: "red",
+            border: "none",
+            padding: "5px 10px",
+            borderRadius: "5px",
+            cursor: "pointer"
+          }}
+        >
+          Delete
+        </button>
+      </div>
+    ))
+  )}
 </div>
                     </div>
                   </div>

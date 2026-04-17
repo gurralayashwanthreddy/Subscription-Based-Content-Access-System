@@ -553,7 +553,7 @@ const UserDashboard = ({ user, onLogout, onUserUpdate }) => {
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                         <div>
                           <strong>Video Lessons</strong>
-                          <p style={{ margin: "4px 0 0", color: "#94a3b8" }}>{completedVideos}/{selectedVideosCount} watched</p>
+                          <p style={{ margin: "4px 0 0", color: "#94a3b8" }}>{Math.min(completedVideos, selectedVideosCount)}/{selectedVideosCount} watched</p>
                         </div>
                         <span>{selectedVideosCount}</span>
                       </div>

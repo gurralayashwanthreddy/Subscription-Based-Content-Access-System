@@ -105,6 +105,9 @@ router.delete("/:courseId/video/:index", async (req, res) => {
     }
 
     course.videos.splice(index, 1);
+    if (course.completedVideos && course.completedVideos.length > course.videos.length) {
+  course.completedVideos = course.completedVideos.slice(0, course.videos.length);
+}
     await course.save();
 
     return res.status(200).json(course);

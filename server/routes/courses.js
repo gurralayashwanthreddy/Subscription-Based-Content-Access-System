@@ -94,4 +94,30 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+
+router.delete("/:courseId/content", async (req, res) => {
+  try {
+    const { type, index } = req.body;
+
+    const course = await Course.findById(req.params.courseId);
+
+    if (!course) {
+      return res.status(404).json({ message: "Course not found" });
+    }
+
+    if (type === "videos") {
+      course.videos.splice(index, 1);
+    } else if (type === "assignments") {
+      course.assignments.splice(index, 1);
+    }
+
+    await course.save();
+
+    res.json(course);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Delete failed" });
+  }
+});
+
 module.exports = router;

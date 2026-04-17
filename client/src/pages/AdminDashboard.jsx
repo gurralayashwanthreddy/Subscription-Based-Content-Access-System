@@ -86,6 +86,24 @@ const AdminDashboard = ({ user, onLogout }) => {
     }
   };
 
+  const deleteContent = async (courseId, type, index) => {
+  try {
+    const updated = await fetchJson(`/api/courses/${courseId}/content`, {
+      method: "DELETE",
+      body: JSON.stringify({ type, index })
+    });
+
+    setCourses((prev) =>
+      prev.map((c) => (c._id === updated._id ? updated : c))
+    );
+
+    alert("Content deleted successfully.");
+  } catch (err) {
+    console.error(err);
+    alert("Delete failed");
+  }
+};
+
   const onAddCourse = async () => {
     const title = prompt("Enter course title");
     const type = prompt("Enter course type (Free, Pro, Premium)");
@@ -504,13 +522,37 @@ const AdminDashboard = ({ user, onLogout }) => {
                         <p>{contentCourse.tests?.length || 0} files</p>
                       </div>
                       <div>
-                        <strong>Existing Videos</strong>
-                        <p>{contentCourse.videos?.length || 0} files</p>
-                      </div>
-                      <div>
-                        <strong>Existing Assignments</strong>
-                        <p>{contentCourse.assignments?.length || 0} files</p>
-                      </div>
+  <strong>Existing Videos</strong>
+
+  {contentCourse.videos?.map((video, i) => (
+    <div key={i} style={{ display: "flex", justifyContent: "space-between", marginBottom: "5px" }}>
+      <span>{video.title}</span>
+
+      <button
+        onClick={() => deleteContent(contentCourse._id, "videos", i)}
+        style={{ color: "red", border: "none", background: "none", cursor: "pointer" }}
+      >
+        Delete
+      </button>
+    </div>
+  ))}
+</div>
+                     <div>
+  <strong>Existing Assignments</strong>
+
+  {contentCourse.assignments?.map((item, i) => (
+    <div key={i} style={{ display: "flex", justifyContent: "space-between", marginBottom: "5px" }}>
+      <span>{item.title}</span>
+
+      <button
+        onClick={() => deleteContent(contentCourse._id, "assignments", i)}
+        style={{ color: "red", border: "none", background: "none", cursor: "pointer" }}
+      >
+        Delete
+      </button>
+    </div>
+  ))}
+</div>
                     </div>
                   </div>
                 </div>
